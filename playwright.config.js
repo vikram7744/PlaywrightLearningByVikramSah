@@ -1,5 +1,8 @@
 const { defineConfig, devices } = require('@playwright/test');
+const path = require('path');
 require('dotenv').config();
+
+const sauceDemoAuthFile = path.join(__dirname, '.auth', 'sauce-demo-user.json');
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 module.exports = defineConfig({
@@ -23,23 +26,31 @@ module.exports = defineConfig({
   },
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/
+    },
+    {
       name: 'chromium',
-      testIgnore: /.*\.api\.spec\.js/,
-      use: { ...devices['Desktop Chrome'] }
+      testIgnore: [/.*\.api\.spec\.js/, /.*\.setup\.js/],
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'], storageState: sauceDemoAuthFile }
     },
     {
       name: 'firefox',
-      testIgnore: /.*\.api\.spec\.js/,
-      use: { ...devices['Desktop Firefox'] }
+      testIgnore: [/.*\.api\.spec\.js/, /.*\.setup\.js/],
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Firefox'], storageState: sauceDemoAuthFile }
     },
     {
       name: 'webkit',
-      testIgnore: /.*\.api\.spec\.js/,
-      use: { ...devices['Desktop Safari'] }
+      testIgnore: [/.*\.api\.spec\.js/, /.*\.setup\.js/],
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Safari'], storageState: sauceDemoAuthFile }
     },
     {
       name: 'api',
-      testMatch: /.*\.api\.spec\.js/
+      testMatch: /.*\.api\.spec\.js/,
+      testIgnore: /.*\.setup\.js/
     }
   ]
 });

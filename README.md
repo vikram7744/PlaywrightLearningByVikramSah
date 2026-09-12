@@ -10,6 +10,7 @@ A compact, practical starting point for learning browser automation with [Playwr
 - Two readable sample tests in `tests/home.spec.js`
 - A complete login-to-checkout scenario against the public Sauce Demo practice site
 - API tests using Playwright's built-in HTTP request fixture (no browser required)
+- Reusable authenticated browser state for the Sauce Demo E2E flow
 - HTML reports, screenshots, video, and retry traces for failed tests
 - Environment-ready `BASE_URL` configuration
 - GitHub Actions CI, including a downloadable HTML report artifact
@@ -79,6 +80,12 @@ npx playwright test --grep @e2e --project=chromium --headed
 ```
 
 Copy `.env.example` to `.env` if you want to override the demo URL or credentials. Never commit a real `.env` file.
+
+### Reusing an authenticated session
+
+`tests/auth.setup.js` is a Playwright setup test. It signs in once and saves the browser storage state to `.auth/sauce-demo-user.json`. The Chromium, Firefox, and WebKit projects depend on that setup and load the saved state before the checkout test runs. This makes the E2E scenario focus on shopping and checkout rather than repeating login steps.
+
+The `.auth` folder is ignored by Git because storage-state files can contain session tokens. Run the normal commands (`npm test`, `npm run test:headed`, or the tagged E2E command) and Playwright automatically runs the setup first.
 
 ## API testing
 

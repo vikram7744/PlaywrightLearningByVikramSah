@@ -1,20 +1,17 @@
 const { test, expect } = require('../fixtures/test');
-const { LoginPage } = require('../pages/LoginPage');
 const { InventoryPage } = require('../pages/InventoryPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 const { sauceDemo } = require('../test-data/sauce-demo');
 
 test.describe('Sauce Demo checkout', () => {
-  test('a customer can buy one product @e2e', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+  test('an authenticated customer can buy one product @e2e', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
 
-    await test.step('Sign in as a standard customer', async () => {
-      await loginPage.open(sauceDemo.url);
-      await loginPage.login(sauceDemo.user.username, sauceDemo.user.password);
+    await test.step('Open the catalog with the saved session', async () => {
+      await inventoryPage.open(sauceDemo.inventoryURL);
       await expect(page).toHaveURL(/inventory.html/);
     });
 

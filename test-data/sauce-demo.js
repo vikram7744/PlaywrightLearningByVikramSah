@@ -1,5 +1,8 @@
+const baseURL = process.env.DEMO_BASE_URL || 'https://www.saucedemo.com/';
+
 const sauceDemo = {
-  url: process.env.DEMO_BASE_URL || 'https://www.saucedemo.com/',
+  url: baseURL,
+  inventoryURL: new URL('inventory.html', baseURL).toString(),
   user: {
     username: process.env.DEMO_USERNAME || 'standard_user',
     password: process.env.DEMO_PASSWORD || 'secret_sauce'

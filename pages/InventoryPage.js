@@ -6,6 +6,10 @@ class InventoryPage {
     this.cartBadge = page.locator('.shopping_cart_badge');
   }
 
+  async open(url) {
+    await this.page.goto(url);
+  }
+
   productAddButton(productSlug) {
     return this.page.locator(`#add-to-cart-${productSlug}`);
   }
