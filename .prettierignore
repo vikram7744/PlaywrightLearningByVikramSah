@@ -1,0 +1,7 @@
+node_modules/
+.npm-cache/
+.auth/
+playwright-report/
+test-results/
+blob-report/
+package-lock.json

@@ -14,6 +14,7 @@ A compact, practical starting point for learning browser automation with [Playwr
 - HTML reports, screenshots, video, and retry traces for failed tests
 - Environment-ready `BASE_URL` configuration
 - GitHub Actions CI, including a downloadable HTML report artifact
+- ESLint and Prettier checks to keep the framework consistent
 
 ## Prerequisites
 
@@ -37,6 +38,9 @@ The first command installs the framework; the second downloads the browser engin
 
 ```bash
 npm test                 # all configured browsers (runs headlessly)
+npm run lint             # find JavaScript issues
+npm run format:check     # check formatting without modifying files
+npm run format           # automatically format project files
 npm run test:smoke       # only @smoke tests
 npm run test:api         # API tests only; no browser window opens
 npm run test:chromium    # all tests in Chromium

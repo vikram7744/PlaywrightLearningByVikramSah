@@ -17,6 +17,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
       - run: npx playwright install --with-deps
       - run: npm test
       - name: Upload Playwright report

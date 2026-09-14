@@ -9,12 +9,14 @@ test.describe('Posts API', () => {
     expect(response.headers()['content-type']).toContain('application/json');
 
     const post = await response.json();
-    expect(post).toEqual(expect.objectContaining({
-      id: api.post.existingId,
-      userId: expect.any(Number),
-      title: expect.any(String),
-      body: expect.any(String)
-    }));
+    expect(post).toEqual(
+      expect.objectContaining({
+        id: api.post.existingId,
+        userId: expect.any(Number),
+        title: expect.any(String),
+        body: expect.any(String)
+      })
+    );
   });
 
   test('returns not found for a missing post @api', async ({ request }) => {
@@ -32,9 +34,11 @@ test.describe('Posts API', () => {
     expect(response.headers()['content-type']).toContain('application/json');
 
     const createdPost = await response.json();
-    expect(createdPost).toEqual(expect.objectContaining({
-      ...api.post.newPost,
-      id: expect.any(Number)
-    }));
+    expect(createdPost).toEqual(
+      expect.objectContaining({
+        ...api.post.newPost,
+        id: expect.any(Number)
+      })
+    );
   });
 });

@@ -9,7 +9,9 @@ test.describe('Playwright documentation home page', () => {
 
     await test.step('Check page identity', async () => {
       await expect(page).toHaveTitle(/Playwright/);
-      await expect(page.getByRole('heading', { name: /Playwright enables reliable web automation/i })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: /Playwright enables reliable web automation/i })
+      ).toBeVisible();
     });
   });
 
@@ -21,7 +23,9 @@ test.describe('Playwright documentation home page', () => {
 
     await test.step('Check the destination page', async () => {
       await expect(page).toHaveURL(new RegExp(documentationLinks.getStarted.urlFragment));
-      await expect(page.getByRole('heading', { name: documentationLinks.getStarted.title })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: documentationLinks.getStarted.title })
+      ).toBeVisible();
     });
   });
 });
