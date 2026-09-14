@@ -1,44 +1,35 @@
 const { test, expect } = require('../../fixtures/test');
+const { PostsClient } = require('../../api/PostsClient');
+const { postSchema } = require('../../schemas/post.schema');
 const { api } = require('../../test-data/api');
 
 test.describe('Posts API', () => {
   test('retrieves a post with the expected response contract @api', async ({ request }) => {
-    const response = await request.get(`${api.baseURL}/posts/${api.post.existingId}`);
+    const postsClient = new PostsClient(request, api.baseURL);
+    const response = await postsClient.getPost(api.post.existingId);
 
     await expect(response).toBeOK();
     expect(response.headers()['content-type']).toContain('application/json');
 
-    const post = await response.json();
-    expect(post).toEqual(
-      expect.objectContaining({
-        id: api.post.existingId,
-        userId: expect.any(Number),
-        title: expect.any(String),
-        body: expect.any(String)
-      })
-    );
+    const post = postSchema.parse(await response.json());
+    expect(post.id).toBe(api.post.existingId);
   });
 
   test('returns not found for a missing post @api', async ({ request }) => {
-    const response = await request.get(`${api.baseURL}/posts/${api.post.missingId}`);
+    const postsClient = new PostsClient(request, api.baseURL);
+    const response = await postsClient.getPost(api.post.missingId);
 
     expect(response.status()).toBe(404);
   });
 
   test('creates a post using a JSON request body @api', async ({ request }) => {
-    const response = await request.post(`${api.baseURL}/posts`, {
-      data: api.post.newPost
-    });
+    const postsClient = new PostsClient(request, api.baseURL);
+    const response = await postsClient.createPost(api.post.newPost);
 
     expect(response.status()).toBe(201);
     expect(response.headers()['content-type']).toContain('application/json');
 
-    const createdPost = await response.json();
-    expect(createdPost).toEqual(
-      expect.objectContaining({
-        ...api.post.newPost,
-        id: expect.any(Number)
-      })
-    );
+    const createdPost = postSchema.parse(await response.json());
+    expect(createdPost).toMatchObject(api.post.newPost);
   });
 });

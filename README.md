@@ -10,6 +10,7 @@ A compact, practical starting point for learning browser automation with [Playwr
 - Two readable sample tests in `tests/home.spec.js`
 - A complete login-to-checkout scenario against the public Sauce Demo practice site
 - API tests using Playwright's built-in HTTP request fixture (no browser required)
+- Reusable API clients and Zod response schemas for contract validation
 - Reusable authenticated browser state for the Sauce Demo E2E flow
 - HTML reports, screenshots, video, and retry traces for failed tests
 - Environment-ready `BASE_URL` configuration
@@ -94,6 +95,8 @@ The `.auth` folder is ignored by Git because storage-state files can contain ses
 ## API testing
 
 `tests/api/posts.api.spec.js` tests the public JSONPlaceholder practice API directly with Playwright's `request` fixture. It demonstrates three essentials: a successful `GET` and response-contract assertion, a `404` negative case, and a `POST` with a JSON request body. No browser is launched for these tests.
+
+The API endpoint calls live in `api/PostsClient.js`; the expected response shape is defined once in `schemas/post.schema.js` with Zod. This means a test fails clearly if a response is structurally invalid, even if one or two manually asserted fields still look correct.
 
 Run the API suite with:
 
